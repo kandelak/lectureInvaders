@@ -9,7 +9,7 @@ public class Cannon {
 
     }
 
-    void move() {
+    void moveHorizontally() {
 
     }
 }
