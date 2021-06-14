@@ -1,6 +1,6 @@
 package GameEntity;
 
-public class Cannon {
+public class Cannon extends GameCharacter {
 
     int xPos;
     int yPos;

@@ -1,6 +1,6 @@
 package GameEntity;
 
-public class Player {
+public class Player extends GameCharacter {
     private static final int DEFAULT_LIFE_POINTS = 4;
     private int playerLifePoints = DEFAULT_LIFE_POINTS;
 

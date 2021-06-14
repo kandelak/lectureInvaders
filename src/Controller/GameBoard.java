@@ -2,14 +2,14 @@ package Controller;
 
 import GameEntity.Alien;
 import GameEntity.Cannon;
-import GameEntity.Character;
+import GameEntity.GameCharacter;
 import View.GameBoardUI;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameBoard {
-    Character[] characters;
+    GameCharacter[] characters;
     Cannon[] cannons;
     private static final int NUMBER_OF_ALIENS = 15;
     KeyListener keyListener;
@@ -44,11 +44,11 @@ public class GameBoard {
 
     }
 
-    public Character[] getCharacters() {
+    public GameCharacter[] getCharacters() {
         return characters;
     }
 
-    public void setCharacters(Character[] characters) {
+    public void setCharacters(GameCharacter[] characters) {
         this.characters = characters;
     }
 

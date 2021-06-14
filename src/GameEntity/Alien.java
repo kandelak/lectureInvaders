@@ -1,6 +1,6 @@
 package GameEntity;
 
-public class Alien {
+public class Alien extends GameCharacter {
 
     void moveDown(){}
 }

@@ -1,6 +1,6 @@
 package GameEntity;
 
-public class Character {
+public class GameCharacter {
 
     int xPos;
     int yPos;
