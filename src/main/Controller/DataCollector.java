@@ -1,6 +1,7 @@
-package Controller;
+package main.Controller;
 
-import java.time.*;
+import java.time.Duration;
+import java.time.LocalTime;
 
 public class DataCollector {
     private static final Duration LECTURE_DURATION = Duration.ofHours(2);
