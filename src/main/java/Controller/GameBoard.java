@@ -5,6 +5,7 @@ import GameEntity.Cannon;
 import GameEntity.Player;
 import View.GameBoardUI;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,15 +13,13 @@ public class GameBoard {
 
 
     private static final int NUMBER_OF_ALIENS = 15;
-    private static final double DEFAULT_ALIEN_STEP = 1.0;
-    private final static double DEFAULT_CANNON_STEP = 1.0;
 
 
     private final Dimension2D size;
-    List<Alien> aliens = new ArrayList<>();
-    List<Player> players = new ArrayList<>();
+    private List<Alien> aliens = new ArrayList<>();
+    Player player;
 
-
+    private DataCollector dataCollector;
     private boolean running;
 
     KeyListener keyListener;
@@ -30,9 +29,11 @@ public class GameBoard {
 
     public GameBoard(Dimension2D size, int playerLifePoints) {
         this.size = size;
-        players.add(new Player(playerLifePoints, new Cannon()));
-        players.forEach(Player::setup);
+        this.player = new Player(playerLifePoints, new Cannon());
+        player.setup();
         createAliens();
+        this.dataCollector = new DataCollector();
+
     }
 
     /**
@@ -53,15 +54,17 @@ public class GameBoard {
      * Updates the position of each Alien.
      */
     public void update() {
-        moveObjects();
+        updateObjects();
     }
 
     public void start() {
         this.running = true;
+        dataCollector.start = LocalTime.now();
     }
 
     public void stop() {
         this.running = false;
+        dataCollector.end = LocalTime.now();
     }
 
     boolean isRunning() {
@@ -72,27 +75,36 @@ public class GameBoard {
         this.running = running;
     }
 
+    public List<Alien> getAliens() {
+        return aliens;
+    }
+
     /**
-     * Moves all Alliens on this game board one step downwards and Cannon too if
-     * key is pressed.
+     * Moves all Aliens on this game board one step downwards,Cannons horizontally and
+     * shoots LaserBolt when corresponding keys are pressed.
      */
-    void moveObjects() {
+    void updateObjects() {
         for (var auto : aliens) {
-            auto.moveDown(DEFAULT_ALIEN_STEP, this.size);
+            auto.moveDown(this.size);
         }
-        players.forEach(t -> t.moveCanon(DEFAULT_CANNON_STEP, keyListener.listen(), this.size));
+        player.updateCannon(keyListener.listen(), this.size);
+        // iterate through all cars (except player car) and check if it is crunched
+        for (var alien : aliens) {
+            if (alien.isAlienDown()) {
+                // because there is no need to check for a collision
+                continue;
+            }
 
+            Collision collision = new Collision(alien, player.getCannon().getLaserBolt());
+
+            if (collision.isCollision()) {
+                dataCollector.incrementMonstersShoot();
+                break;
+            }
+        }
     }
 
 
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-
-    public void setCharacters(List<Player> players) {
-        this.players = players;
-    }
 
 
     public Dimension2D getSize() {

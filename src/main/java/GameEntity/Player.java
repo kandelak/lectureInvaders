@@ -29,11 +29,19 @@ public class Player {
      */
     public void setup() {
         cannon.setPosition(START_X_COORDINATE, START_Y_COORDINATE);
-        cannon.setDirection(START_DIRECTION);
+        cannon.setShootAngle(START_DIRECTION);
     }
 
-    public void moveCanon(double step, KeyPressed keyPressed, Dimension2D size) {
-        this.cannon.moveHorizontally(step, keyPressed);
+    /**
+     *
+     */
+    public void updateCannon(KeyPressed keyPressed, Dimension2D size) {
+        cannon.moveHorizontally(keyPressed);
+        cannon.shoot(keyPressed, size);
+    }
+
+    public Cannon getCannon() {
+        return cannon;
     }
 
     public int getPlayerLifePoints() {

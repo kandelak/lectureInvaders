@@ -4,4 +4,5 @@ public enum KeyPressed {
     RIGHT,
     LEFT,
     IGNORE,
+    SHOOT;
 }

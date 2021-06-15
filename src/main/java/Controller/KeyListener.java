@@ -7,14 +7,15 @@ public class KeyListener extends KeyAdapter {
     private KeyPressed keyPressed;
 
 
-
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT)
             keyPressed = KeyPressed.RIGHT;
         else if (e.getKeyCode() == KeyEvent.VK_LEFT)
             keyPressed = KeyPressed.LEFT;
-        else {
+        else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            keyPressed = KeyPressed.SHOOT;
+        } else {
             keyPressed = KeyPressed.IGNORE;
         }
     }

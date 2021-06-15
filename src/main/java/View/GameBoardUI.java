@@ -32,6 +32,7 @@ public class GameBoardUI extends Canvas {
     private static final int DEFAULT_WIDTH = 500;
     private static final int DEFAULT_HEIGHT = 300;
     private static final Dimension2D DEFAULT_SIZE = new Dimension2D(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    private static final int DEFAULT_PLAYER_LIFE_POINTS = 4;
 
     public static Dimension2D getPreferredSize() {
         return DEFAULT_SIZE;
@@ -47,7 +48,6 @@ public class GameBoardUI extends Canvas {
 
     private final GameToolBar gameToolBar;
 
-    private MouseSteering mouseSteering;
 
     private HashMap<String, Image> imageCache;
 
@@ -60,9 +60,6 @@ public class GameBoardUI extends Canvas {
         return gameBoard;
     }
 
-    public MouseSteering getMouseSteering() {
-        return mouseSteering;
-    }
 
     /**
      * Removes all existing cars from the game board and re-adds them. Player car is
@@ -77,17 +74,16 @@ public class GameBoardUI extends Canvas {
 
     private void setupGameBoard() {
         Dimension2D size = getPreferredSize();
-        this.gameBoard = new GameBoard(size);
-        this.gameBoard.setAudioPlayer(new AudioPlayer());
+        this.gameBoard = new GameBoard(size, DEFAULT_PLAYER_LIFE_POINTS);
         widthProperty().set(size.getWidth());
         heightProperty().set(size.getHeight());
-        this.mouseSteering = new MouseSteering(this, this.gameBoard.getPlayerCar());
+
     }
 
     private void setupImageCache() {
         this.imageCache = new HashMap<>();
-        for (Car car : this.gameBoard.getCars()) {
-            String imageLocation = car.getIconLocation();
+        for (var alien : this.gameBoard.getAliens()) {
+            String imageLocation = alien.getIconLocation();
             this.imageCache.computeIfAbsent(imageLocation, this::getImage);
         }
         String playerImageLocation = this.gameBoard.getPlayerCar().getIconLocation();
