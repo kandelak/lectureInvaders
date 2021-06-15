@@ -11,6 +11,6 @@ public class Alien {
     }
 
     public void moveDown(double step, Dimension2D size) {
-        this.position = new Point2D(position.getX(), position.getY() - step);
+        this.position = new Point2D(position.getX(), position.getY() + step);
     }
 }
