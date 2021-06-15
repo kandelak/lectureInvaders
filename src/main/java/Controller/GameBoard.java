@@ -9,18 +9,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameBoard {
-    List<Player> players = new ArrayList<>();
-    List<Cannon> cannons = new ArrayList<>();
+
+
     private static final int NUMBER_OF_ALIENS = 15;
-    KeyListener keyListener;
-    GameBoardUI gameBoardUI;
+    private static final double DEFAULT_ALIEN_STEP = 1.0;
+    private final static double DEFAULT_CANNON_STEP = 1.0;
+
+
     private final Dimension2D size;
     List<Alien> aliens = new ArrayList<>();
-    private boolean running;
-    private static double DEFAULT_ALIEN_STEP = 1.0;
+    List<Player> players = new ArrayList<>();
 
-    public GameBoard(Dimension2D size) {
+
+    private boolean running;
+
+    KeyListener keyListener;
+
+    GameBoardUI gameBoardUI;
+
+
+    public GameBoard(Dimension2D size, int playerLifePoints) {
         this.size = size;
+        players.add(new Player(playerLifePoints, new Cannon()));
+        players.forEach(Player::setup);
         createAliens();
     }
 
@@ -42,15 +53,15 @@ public class GameBoard {
      * Updates the position of each Alien.
      */
     public void update() {
-
+        moveObjects();
     }
 
-    void start() {
-
+    public void start() {
+        this.running = true;
     }
 
-    void stop() {
-
+    public void stop() {
+        this.running = false;
     }
 
     boolean isRunning() {
@@ -62,13 +73,14 @@ public class GameBoard {
     }
 
     /**
-     * Moves all Alliens on this game board one step downwards and Player too if
+     * Moves all Alliens on this game board one step downwards and Cannon too if
      * key is pressed.
      */
     void moveObjects() {
         for (var auto : aliens) {
-            auto.moveDown(DEFAULT_ALIEN_STEP);
+            auto.moveDown(DEFAULT_ALIEN_STEP, this.size);
         }
+        players.forEach(t -> t.moveCanon(DEFAULT_CANNON_STEP, keyListener.listen(), this.size));
 
     }
 
@@ -82,13 +94,6 @@ public class GameBoard {
         this.players = players;
     }
 
-    public List<Cannon> getCannons() {
-        return cannons;
-    }
-
-    public void setCannons(List<Cannon> cannons) {
-        this.cannons = cannons;
-    }
 
     public Dimension2D getSize() {
         return size;

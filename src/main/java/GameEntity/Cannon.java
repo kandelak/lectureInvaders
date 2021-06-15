@@ -1,5 +1,6 @@
 package GameEntity;
 
+import Controller.KeyPressed;
 import Controller.Point2D;
 
 public class Cannon {
@@ -23,7 +24,11 @@ public class Cannon {
         this.direction = direction;
     }
 
-    void moveHorizontally() {
-
+    void moveHorizontally(double step, KeyPressed direction) {
+        if (direction == KeyPressed.LEFT) {
+            setPosition(position.getX() - step, position.getY());
+        } else {
+            setPosition(position.getX() + step, position.getY());
+        }
     }
 }

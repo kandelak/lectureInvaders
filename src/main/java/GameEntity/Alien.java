@@ -1,5 +1,6 @@
 package GameEntity;
 
+import Controller.Dimension2D;
 import Controller.Point2D;
 
 public class Alien {
@@ -9,7 +10,7 @@ public class Alien {
         this.position = new Point2D(x, y);
     }
 
-    public void moveDown(double step) {
+    public void moveDown(double step, Dimension2D size) {
         this.position = new Point2D(position.getX(), position.getY() - step);
     }
 }

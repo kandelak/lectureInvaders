@@ -63,7 +63,7 @@ public class InvadersApplication extends Application {
     /**
      * The whole game will be executed through the launch() method.
      * <p>
-     * Use {@link Bumpers#main(String[])} to run the Java application.
+     * Use {@link Invaders#main(String[])} to run the Java application.
      */
     public static void startApp(String[] args) {
         launch(args);

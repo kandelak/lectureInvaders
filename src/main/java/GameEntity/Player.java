@@ -1,5 +1,8 @@
 package GameEntity;
 
+import Controller.Dimension2D;
+import Controller.KeyPressed;
+
 public class Player {
     /**
      * Start direction for the cannon
@@ -11,8 +14,9 @@ public class Player {
     private static final int DEFAULT_LIFE_POINTS = 4;
     private int playerLifePoints;
 
-    Player(int playerLifePoints, Cannon cannon) {
-        this.playerLifePoints = playerLifePoints;
+    public Player(int playerLifePoints, Cannon cannon) {
+        if (playerLifePoints <= 0) this.playerLifePoints = DEFAULT_LIFE_POINTS;
+        else this.playerLifePoints = playerLifePoints;
         this.cannon = cannon;
     }
 
@@ -28,8 +32,8 @@ public class Player {
         cannon.setDirection(START_DIRECTION);
     }
 
-    void moveCanon() {
-        this.cannon.moveHorizontally();
+    public void moveCanon(double step, KeyPressed keyPressed, Dimension2D size) {
+        this.cannon.moveHorizontally(step, keyPressed);
     }
 
     public int getPlayerLifePoints() {
