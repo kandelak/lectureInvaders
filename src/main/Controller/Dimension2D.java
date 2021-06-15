@@ -1,4 +1,4 @@
-package Controller;
+package main.Controller;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -35,10 +35,9 @@ public class Dimension2D {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof Dimension2D)) {
+        if (!(obj instanceof Dimension2D other)) {
             return false;
         }
-        Dimension2D other = (Dimension2D) obj;
         return height == other.height && width == other.width;
     }
 

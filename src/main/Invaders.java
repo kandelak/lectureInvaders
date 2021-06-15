@@ -1,4 +1,6 @@
-package Controller;
+package main;
+
+import main.View.InvadersApplication;
 
 public final class Invaders {
     private Invaders() {

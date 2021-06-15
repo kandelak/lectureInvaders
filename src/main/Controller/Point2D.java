@@ -1,4 +1,4 @@
-package Controller;
+package main.Controller;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -37,10 +37,9 @@ public class Point2D {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof Point2D)) {
+        if (!(obj instanceof Point2D other)) {
             return false;
         }
-        Point2D other = (Point2D) obj;
         return x == other.x && y == other.y;
     }
 

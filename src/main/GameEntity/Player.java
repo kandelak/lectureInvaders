@@ -1,12 +1,12 @@
-package GameEntity;
+package main.GameEntity;
 
-import Controller.Dimension2D;
-import Controller.KeyPressed;
+import main.Controller.Dimension2D;
 
 public class Player {
     /**
      * Start direction for the cannon
      */
+    //TODO: New start coordinates for the cannon
     private static final int START_DIRECTION = 90;
     private static final double START_X_COORDINATE = 0.0;
     private static final double START_Y_COORDINATE = 0.0;
@@ -32,11 +32,16 @@ public class Player {
         cannon.setDirection(START_DIRECTION);
     }
 
-    public void moveCanon(double step, KeyPressed keyPressed, Dimension2D size) {
-        this.cannon.moveHorizontally(step, keyPressed);
+    public void moveCanon(double step, Dimension2D size) {
+        //TODO: Movement implementation
+        this.cannon.moveHorizontally(step);
     }
 
     public int getPlayerLifePoints() {
         return playerLifePoints;
+    }
+
+    public Cannon getCannon() {
+        return cannon;
     }
 }
