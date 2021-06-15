@@ -8,8 +8,7 @@ import java.util.TimerTask;
 import Controller.Dimension2D;
 import Controller.GameBoard;
 import Controller.Point2D;
-import GameEntity.Player;
-import Controller.KeyListener;
+import GameEntity.Alien;
 import javafx.application.Platform;
 
 import javafx.scene.canvas.Canvas;
@@ -112,7 +111,7 @@ public class GameBoardUI extends Canvas {
      */
     public void startGame() {
         if (!this.gameBoard.isRunning()) {
-            this.gameBoard.startGame();
+            this.gameBoard.start();
             this.gameToolBar.updateToolBarStatus(true);
             startTimer();
             paint();
@@ -154,7 +153,7 @@ public class GameBoardUI extends Canvas {
      */
     public void stopGame() {
         if (this.gameBoard.isRunning()) {
-            this.gameBoard.stopGame();
+            this.gameBoard.stop();
             this.gameToolBar.updateToolBarStatus(false);
             this.gameTimer.cancel();
         }
@@ -168,11 +167,11 @@ public class GameBoardUI extends Canvas {
         getGraphicsContext2D().setFill(BACKGROUND_COLOR);
         getGraphicsContext2D().fillRect(0, 0, getWidth(), getHeight());
 
-        for (Car car : this.gameBoard.getCars()) {
-            paintCar(car);
+        for (var alien : this.gameBoard.getAliens()) {
+            paintAlien(alien);
         }
         // render player car
-        paintCar(this.gameBoard.getPlayerCar());
+        paintAlien(this.gameBoard.getPlayerCar());
     }
 
     /**
@@ -180,10 +179,10 @@ public class GameBoardUI extends Canvas {
      *
      * @param car to be drawn
      */
-    private void paintCar(Car car) {
-        Point2D carPosition = car.getPosition();
+    private void paintAlien(Alien alien) {
+        Point2D carPosition = alien.getPosition();
 
-        getGraphicsContext2D().drawImage(this.imageCache.get(car.getIconLocation()), carPosition.getX(),
+        getGraphicsContext2D().drawImage(this.imageCache.get(alien.getIconLocation()), carPosition.getX(),
                 carPosition.getY(), car.getSize().getWidth(), car.getSize().getHeight());
     }
 

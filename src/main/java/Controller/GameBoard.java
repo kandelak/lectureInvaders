@@ -65,9 +65,10 @@ public class GameBoard {
     public void stop() {
         this.running = false;
         dataCollector.end = LocalTime.now();
+        dataCollector.evaluate();
     }
 
-    boolean isRunning() {
+    public boolean isRunning() {
         return this.running;
     }
 
@@ -95,16 +96,14 @@ public class GameBoard {
                 continue;
             }
 
+            //is not implemented fully
             Collision collision = new Collision(alien, player.getCannon().getLaserBolt());
 
             if (collision.isCollision()) {
                 dataCollector.incrementMonstersShoot();
-                break;
             }
         }
     }
-
-
 
 
     public Dimension2D getSize() {
