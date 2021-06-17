@@ -12,10 +12,6 @@ public class Cannon extends Entity {
 		setIconLocation(CANNON_IMAGE_FILE);
 	}
 
-	public void shoot() {
-
-	}
-
 	public void moveHorizontally(double amount) {
 		double oldX = getPosition().getX();
 

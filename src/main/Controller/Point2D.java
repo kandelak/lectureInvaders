@@ -47,5 +47,9 @@ public class Point2D {
     public String toString() {
         return String.format(Locale.ROOT, "(%.2f, %.2f)", x, y);
     }
+
+    public Point2D add(Point2D other) {
+        return new Point2D(x + other.x, y + other.y);
+    }
 }
 

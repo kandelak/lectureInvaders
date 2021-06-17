@@ -41,7 +41,7 @@ public class GameBoardUI extends Canvas {
 		this.gameBoard = gameBoard;
 		this.toolBar = new GameToolBar(); // the tool bar object with start and stop buttons
 
-		setup(gameBoard.getPlayer(), gameBoard.getAliens());
+		setup();
 		toolBar.initializeActions(this);
 	}
 
@@ -49,20 +49,9 @@ public class GameBoardUI extends Canvas {
 	 * Removes all existing entities from the game board and re-adds them. Player
 	 * cannon is reset to default starting position. Renders graphics.
 	 */
-	public void setup(Player player, List<Alien> aliens) {
-		setupImageCache(player, aliens);
-		paint();
-	}
-
-	private void setupImageCache(Player player, List<Alien> aliens) {
+	public void setup() {
 		this.imageCache = new HashMap<>();
-		for (Entity entity : aliens) {
-			String imageLocation = entity.getIconLocation();
-			this.imageCache.computeIfAbsent(imageLocation, this::getImage);
-		}
-
-		String playerImageLocation = player.getCannon().getIconLocation();
-		this.imageCache.put(playerImageLocation, getImage(playerImageLocation));
+		paint();
 	}
 
 	/**
@@ -109,12 +98,10 @@ public class GameBoardUI extends Canvas {
 		getGraphicsContext2D().setFill(BACKGROUND_COLOR);
 		getGraphicsContext2D().fillRect(0, 0, getWidth(), getHeight());
 
-		for (Alien alien : this.gameBoard.getAliens()) {
-			paintEntity(alien);
+		for (Entity entity : this.gameBoard.getEntities()) {
+			this.imageCache.computeIfAbsent(entity.getIconLocation(), this::getImage);
+			paintEntity(entity);
 		}
-
-		// render player cannon
-		paintEntity(this.gameBoard.getPlayer().getCannon());
 	}
 
 	/**

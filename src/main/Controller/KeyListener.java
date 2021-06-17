@@ -2,24 +2,21 @@ package main.Controller;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import main.GameEntity.Player;
-import main.View.GameBoardUI;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class KeyListener {
-	private KeyCode keyPressed;
-
-	public KeyListener() {	}
+	private final Set<KeyCode> keysPressed = new HashSet<>();
+	public Set<KeyCode> getKeysPressed() { return keysPressed; }
 
 	public void keyPressed(KeyEvent keyEvent) {
-		keyPressed = keyEvent.getCode();
-	}
-
-	public KeyCode getKeyPressed() {
-		return keyPressed;
+		keysPressed.add(keyEvent.getCode());
+		keyEvent.consume();
 	}
 
 	public void keyReleased(KeyEvent keyEvent) {
-		if(keyEvent.getCode() == keyPressed)
-			keyPressed = null;
+		keysPressed.remove(keyEvent.getCode());
+		keyEvent.consume();
 	}
 }

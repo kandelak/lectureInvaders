@@ -4,16 +4,14 @@ import main.Controller.Dimension2D;
 import main.View.GameBoardUI;
 
 public class Alien extends Entity {
-
     private static final String ALIEN_IMAGE_FILE = "Alien.png";
 
     public Alien(Dimension2D gameBoardSize) {
         super(gameBoardSize);
-        // TODO: Set the values in the parent class for speed etc. like in Bumpers.
         setIconLocation(ALIEN_IMAGE_FILE);
     }
 
-    public void moveDown(double amount) {
+    public void moveVertically(double amount) {
         double oldY = getPosition().getY();
 
         // don't exceed max position to the top and bottom

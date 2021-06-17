@@ -200,6 +200,9 @@ public abstract class Entity {
     public void setPosition(double x, double y) {
         this.position = new Point2D(x, y);
     }
+    public void setPosition(Point2D point) {
+        setPosition(point.getX(), point.getY());
+    }
 
     public Dimension2D getSize() {
         return this.size;

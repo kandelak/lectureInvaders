@@ -6,16 +6,7 @@ import java.util.Objects;
 /**
  * Represents a dimension with a width and height.
  */
-public class Dimension2D {
-
-    private final double width;
-    private final double height;
-
-
-    public Dimension2D(double width, double height) {
-        this.width = width;
-        this.height = height;
-    }
+public record Dimension2D(double width, double height) {
 
     public double getWidth() {
         return this.width;
@@ -45,4 +36,10 @@ public class Dimension2D {
     public String toString() {
         return String.format(Locale.ROOT, "Dimension2D [width=%.2f, height=%.2f]", width, height);
     }
+
+    public Dimension2D scale(double factor){
+        return new Dimension2D(width * factor, height * factor);
+    }
+
+    public Point2D toPoint(){ return new Point2D(width, height); }
 }

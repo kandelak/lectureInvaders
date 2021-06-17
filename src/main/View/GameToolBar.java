@@ -1,10 +1,6 @@
 package main.View;
 
-
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-
-import java.util.Optional;
 
 /**
  * This class visualizes the tool bar with start and stop buttons above the game board.

@@ -1,13 +1,13 @@
 package main.Controller;
 
+import java.time.Instant;
 import java.util.*;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
 import main.Audio.AudioPlayerInterface;
-import main.GameEntity.Alien;
-import main.GameEntity.Cannon;
-import main.GameEntity.Player;
+import main.GameEntity.*;
 import main.View.GameBoardUI;
 import main.View.GameToolBar;
 
@@ -18,6 +18,7 @@ public class GameBoard {
 	private static final int NUMBER_OF_ALIENS = 15;
 	private static final double DEFAULT_ALIEN_STEP = 1.0;
 	private final static double DEFAULT_CANNON_STEP = 3.0;
+	private final static double DEFAULT_BOLT_STEP = -5.0;
 	private final static int PLAYER_LIFE_POINTS = 3;
 	private AudioPlayerInterface audioPlayer;
 	private GameOutcome gameOutcome = GameOutcome.OPEN;
@@ -27,12 +28,15 @@ public class GameBoard {
 
 	private boolean running;
 	private Timer gameTimer; // Timer responsible for updating the game every frame that runs in a separat thread
+	private long shootingCooldownTimestamp = 0;
 
 	// Services
 	private GameBoardUI gameBoardUI;
 	private KeyListener keyListener;
 	List<Alien> aliens = new ArrayList<>();
 	Player player;
+	private List<LaserBolt> laserBolts = new ArrayList<>();
+	private static final long CANNON_COOLDOWN_TIMEOUT = 600;
 
 	public GameBoard(Dimension2D size) {
 		this.size = size;
@@ -80,8 +84,6 @@ public class GameBoard {
 		switch (action) {
 			case START -> startGame();
 			case STOP -> {
-				stopGame();
-
 				Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you really want to stop the game?", ButtonType.YES,
 						ButtonType.NO);
 				alert.setTitle("Stop Game Confirmation");
@@ -95,9 +97,6 @@ public class GameBoard {
 				if (result.isPresent() && result.get() == ButtonType.YES) {
 					// TODO: reset game?
 					System.exit(0);
-				} else {
-					// continue running
-					gameBoardUI.startGame();
 				}
 			}
 		}
@@ -116,7 +115,7 @@ public class GameBoard {
 			stopGame();
 		}
 
-		moveEntities();
+		updateEntities();
 		gameBoardUI.paint();
 	}
 
@@ -141,29 +140,30 @@ public class GameBoard {
 	 * Moves all Aliens on this game board one step downwards and Cannon too if key
 	 * is pressed.
 	 */
-	void moveEntities() {
-		for (Alien alien : aliens) {
-			alien.moveDown(DEFAULT_ALIEN_STEP);
+	void updateEntities() {
+		for (Alien alien : aliens)
+			alien.moveVertically(DEFAULT_ALIEN_STEP);
+
+		for (LaserBolt bolt : laserBolts)
+			bolt.moveVertically(DEFAULT_BOLT_STEP);
+		laserBolts.removeIf(laserBolt -> laserBolt.getPosition().getY() < -100);
+
+		if(keyListener.getKeysPressed().contains(KeyCode.RIGHT) || keyListener.getKeysPressed().contains(KeyCode.D))
+			player.getCannon().moveHorizontally(DEFAULT_CANNON_STEP);
+
+		if(keyListener.getKeysPressed().contains(KeyCode.LEFT) || keyListener.getKeysPressed().contains(KeyCode.A))
+			player.getCannon().moveHorizontally(-1 * DEFAULT_CANNON_STEP);
+
+		if(keyListener.getKeysPressed().contains(KeyCode.SPACE) && Instant.now().toEpochMilli() - shootingCooldownTimestamp > CANNON_COOLDOWN_TIMEOUT){
+			shootingCooldownTimestamp = Instant.now().toEpochMilli();
+			shoot();
 		}
+	}
 
-		if(keyListener.getKeyPressed() != null)
-			switch (keyListener.getKeyPressed()) {
-				case RIGHT:
-				case D:
-					player.getCannon().moveHorizontally(DEFAULT_CANNON_STEP);
-					break;
-
-				case LEFT:
-				case A:
-					player.getCannon().moveHorizontally(-1 * DEFAULT_CANNON_STEP);
-					break;
-
-				case SPACE:
-					player.getCannon().shoot();
-					break;
-
-				default: break; // ignore other input
-			}
+	public void shoot(){
+		LaserBolt newBolt = new LaserBolt(size);
+		newBolt.setPosition(player.getCannon().getPosition().add(player.getCannon().getSize().scale(0.5).toPoint()));
+		this.laserBolts.add(newBolt);
 	}
 
 	public AudioPlayerInterface getAudioPlayer() { return this.audioPlayer; }
@@ -177,6 +177,15 @@ public class GameBoard {
 	public GameOutcome getGameOutcome() { return gameOutcome; }
 	public Dimension2D getSize() { return size; }
 	public Player getPlayer() { return player; }
+	public List<Entity> getEntities(){
+		List<Entity> entities = new ArrayList<>();
+
+		entities.addAll(aliens);
+		entities.addAll(laserBolts);
+		entities.add(player.getCannon());
+
+		return entities;
+	}
 	public List<Alien> getAliens() { return aliens; }
 	public GameBoardUI getGameBoardUI() {
 		return gameBoardUI;
