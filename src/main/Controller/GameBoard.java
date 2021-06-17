@@ -1,7 +1,6 @@
 package main.Controller;
 
 
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
@@ -9,7 +8,6 @@ import main.Audio.AudioPlayerInterface;
 import main.GameEntity.*;
 import main.View.GameBoardUI;
 import main.View.GameToolBar;
-
 
 import java.time.Instant;
 import java.time.LocalTime;
@@ -46,6 +44,7 @@ public class GameBoard implements Observer {
     private Player player;
     private DataCollector dataCollector = new DataCollector();
 
+    //The time in ms that has to pass, before the next shot can be done
     private static final long CANNON_COOLDOWN_TIMEOUT = 300;
 
 
