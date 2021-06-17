@@ -8,9 +8,7 @@ import main.View.GameBoardUI;
 public class KeyListener {
 	private KeyCode keyPressed;
 
-	public KeyListener(GameBoardUI gameBoardUI) {
-		gameBoardUI.addEventHandler(KeyEvent.KEY_PRESSED, this::keyPressed);
-	}
+	public KeyListener() {	}
 
 	public void keyPressed(KeyEvent keyEvent) {
 		keyPressed = keyEvent.getCode();
@@ -18,5 +16,10 @@ public class KeyListener {
 
 	public KeyCode getKeyPressed() {
 		return keyPressed;
+	}
+
+	public void keyReleased(KeyEvent keyEvent) {
+		if(keyEvent.getCode() == keyPressed)
+			keyPressed = null;
 	}
 }

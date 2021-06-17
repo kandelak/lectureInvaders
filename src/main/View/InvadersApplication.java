@@ -47,6 +47,7 @@ public class InvadersApplication extends Application {
 		primaryStage.setScene(scene);
 		//scene.setOnKeyPressed(keyEvent -> this.gameBoard.getKeyListener().keyPressed(keyEvent));
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> this.gameBoard.getKeyListener().keyPressed(keyEvent));
+		scene.addEventFilter(KeyEvent.KEY_RELEASED, keyEvent -> this.gameBoard.getKeyListener().keyReleased(keyEvent));
 		primaryStage.setOnCloseRequest(closeEvent -> this.gameBoard.getGameBoardUI().stopGame());
 		primaryStage.show();
 	}

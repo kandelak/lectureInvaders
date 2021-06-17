@@ -45,7 +45,7 @@ public class GameBoard {
 
 		// create UI and keyListener
 		gameBoardUI = new GameBoardUI(this);
-		keyListener = new KeyListener(gameBoardUI);
+		keyListener = new KeyListener();
 	}
 
 	/**
