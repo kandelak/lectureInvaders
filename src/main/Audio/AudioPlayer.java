@@ -14,7 +14,6 @@ public class AudioPlayer implements AudioPlayerInterface {
 	private static final String BACKGROUND_MUSIC_FILE = "GameMusic.wav";
 	private static final String CRASH_SOUND_FILE = "Bang.wav";
 
-
 	private static final double CRASH_SOUND_VOLUME = 0.5;
 
 	private final MediaPlayer musicPlayer;
