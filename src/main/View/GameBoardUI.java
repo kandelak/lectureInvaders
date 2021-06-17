@@ -22,113 +22,118 @@ import main.GameEntity.Player;
  */
 public class GameBoardUI extends Canvas {
 
-	private static final Color BACKGROUND_COLOR = Color.DARKBLUE;
+    private static final Color BACKGROUND_COLOR = Color.DARKBLUE;
 
-	private static final int DEFAULT_WIDTH = 1000;
-	private static final int DEFAULT_HEIGHT = 500;
-	private static final Dimension2D DEFAULT_SIZE = new Dimension2D(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    private static final int DEFAULT_WIDTH = 1000;
+    private static final int DEFAULT_HEIGHT = 500;
+    private static final Dimension2D DEFAULT_SIZE = new Dimension2D(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
-	private final GameToolBar toolBar;
+    private final GameToolBar toolBar;
 
-	public static Dimension2D getPreferredSize() {
-		return DEFAULT_SIZE;
-	}
+    public static Dimension2D getPreferredSize() {
+        return DEFAULT_SIZE;
+    }
 
-	private final GameBoard gameBoard;
-	private HashMap<String, Image> imageCache;
+    private final GameBoard gameBoard;
+    private HashMap<String, Image> imageCache;
 
-	public GameBoardUI(GameBoard gameBoard) {
-		this.gameBoard = gameBoard;
-		this.toolBar = new GameToolBar(); // the tool bar object with start and stop buttons
+    public GameBoardUI(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
+        this.toolBar = new GameToolBar(); // the tool bar object with start and stop buttons
 
-		setup();
-		toolBar.initializeActions(this);
-	}
+        setup();
+        toolBar.initializeActions(this);
+    }
 
-	/**
-	 * Removes all existing entities from the game board and re-adds them. Player
-	 * cannon is reset to default starting position. Renders graphics.
-	 */
-	public void setup() {
-		this.imageCache = new HashMap<>();
-		paint();
-	}
+    /**
+     * Removes all existing entities from the game board and re-adds them. Player
+     * cannon is reset to default starting position. Renders graphics.
+     */
+    public void setup() {
+        this.imageCache = new HashMap<>();
+        paint();
+    }
 
-	/**
-	 * Sets the entity's image.
-	 *
-	 * @param entityImageFilePath an image file path that needs to be available in
-	 *                            the resources folder of the project
-	 */
-	private Image getImage(String entityImageFilePath) {
-		URL entityImageUrl = getClass().getClassLoader().getResource(entityImageFilePath);
-		if (entityImageUrl == null) {
-			throw new IllegalArgumentException(
-					"Please ensure that your resources folder contains the appropriate files for this exercise.");
-		}
-		return new Image(entityImageUrl.toExternalForm());
-	}
+    /**
+     * Sets the entity's image.
+     *
+     * @param entityImageFilePath an image file path that needs to be available in
+     *                            the resources folder of the project
+     */
+    private Image getImage(String entityImageFilePath) {
+        URL entityImageUrl = getClass().getClassLoader().getResource(entityImageFilePath);
+        if (entityImageUrl == null) {
+            throw new IllegalArgumentException(
+                    "Please ensure that your resources folder contains the appropriate files for this exercise.");
+        }
+        return new Image(entityImageUrl.toExternalForm());
+    }
 
-	/**
-	 * Starts the GameBoardUI Thread, if it wasn't running. Starts the game board,
-	 * which causes the entities to change their positions (i.e. move). Renders
-	 * graphics and updates tool bar status.
-	 */
-	public void startGame() {
-		this.toolBar.updateToolBarStatus(true);
-		paint();
-	}
+    /**
+     * Starts the GameBoardUI Thread, if it wasn't running. Starts the game board,
+     * which causes the entities to change their positions (i.e. move). Renders
+     * graphics and updates tool bar status.
+     */
+    public void startGame() {
+        this.toolBar.updateToolBarStatus(true);
+        paint();
+    }
 
-	private void updateGame() {
-		paint();
-	}
+    private void updateGame() {
+        paint();
+    }
 
-	/**
-	 * Stops the game board and set the tool bar to default values.
-	 */
-	public void stopGame() {
-		this.toolBar.updateToolBarStatus(false);
-	}
+    /**
+     * Stops the game board and set the tool bar to default values.
+     */
+    public void stopGame() {
+        this.toolBar.updateToolBarStatus(false);
+    }
 
-	/**
-	 * Render the graphics of the whole game by iterating through the entities of
-	 * the game board at render each of them individually.
-	 */
-	public void paint() {
-		getGraphicsContext2D().setFill(BACKGROUND_COLOR);
-		getGraphicsContext2D().fillRect(0, 0, getWidth(), getHeight());
+    /**
+     * Render the graphics of the whole game by iterating through the entities of
+     * the game board at render each of them individually.
+     */
+    public void paint() {
+        getGraphicsContext2D().setFill(BACKGROUND_COLOR);
+        getGraphicsContext2D().fillRect(0, 0, getWidth(), getHeight());
 
-		for (Entity entity : this.gameBoard.getEntities()) {
-			this.imageCache.computeIfAbsent(entity.getIconLocation(), this::getImage);
-			paintEntity(entity);
-		}
-	}
+        for (Entity entity : this.gameBoard.getEntities()) {
+            this.imageCache.computeIfAbsent(entity.getIconLocation(), this::getImage);
+            paintEntity(entity);
+        }
+    }
 
-	/**
-	 * Show image of a entity at the current position of the entity.
-	 *
-	 * @param entity to be drawn
-	 */
-	private void paintEntity(Entity entity) {
-		Point2D entityPosition = entity.getPosition();
+    /**
+     * Show image of a entity at the current position of the entity.
+     *
+     * @param entity to be drawn
+     */
+    private void paintEntity(Entity entity) {
+        Point2D entityPosition = entity.getPosition();
 
-		getGraphicsContext2D().drawImage(this.imageCache.get(entity.getIconLocation()), entityPosition.getX(),
-				entityPosition.getY(), entity.getSize().getWidth(), entity.getSize().getHeight());
-	}
+        getGraphicsContext2D().drawImage(this.imageCache.get(entity.getIconLocation()), entityPosition.getX(),
+                entityPosition.getY(), entity.getSize().getWidth(), entity.getSize().getHeight());
+    }
 
-	/**
-	 * Method used to display alerts in moveEntities().
-	 *
-	 * @param message you want to display as a String
-	 */
-	public void showAsyncAlert(String message) {
-		Platform.runLater(() -> {
-			Alert alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setHeaderText(message);
-			alert.showAndWait();
-		});
-	}
+    /**
+     * Method used to display alerts in moveEntities().
+     *
+     * @param message you want to display as a String
+     */
+    public void showAsyncAlert(String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(message);
+            alert.showAndWait();
+        });
+    }
 
-	public GameBoard getGameBoard() { return gameBoard; }
-	public GameToolBar getToolBar() { return toolBar; }
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
+
+    public GameToolBar getToolBar() {
+        return toolBar;
+    }
 }
