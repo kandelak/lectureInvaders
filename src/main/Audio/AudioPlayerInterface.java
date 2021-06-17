@@ -5,7 +5,6 @@ package main.Audio;
  * the game.
  */
 public interface AudioPlayerInterface {
-
 	/**
 	 * Starts playing the background music if it's not started already.
 	 */
