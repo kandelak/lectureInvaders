@@ -1,22 +1,15 @@
 package main.View;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import main.Audio.AudioPlayer;
 import main.Controller.Dimension2D;
 import main.Controller.GameBoard;
-import main.Controller.GameOutcome;
-import main.Controller.KeyListener;
 import main.Controller.Point2D;
 import main.GameEntity.Alien;
 import main.GameEntity.Entity;
@@ -30,81 +23,46 @@ import main.GameEntity.Player;
 public class GameBoardUI extends Canvas {
 
 	private static final Color BACKGROUND_COLOR = Color.DARKBLUE;
-	/**
-	 * The update period of the game in ms, this gives us 25 fps.
-	 */
-	private static final int UPDATE_PERIOD = 1000 / 25;
+
 	private static final int DEFAULT_WIDTH = 1000;
 	private static final int DEFAULT_HEIGHT = 500;
 	private static final Dimension2D DEFAULT_SIZE = new Dimension2D(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
+	private final GameToolBar toolBar;
 
 	public static Dimension2D getPreferredSize() {
 		return DEFAULT_SIZE;
 	}
 
-	/**
-	 * Timer responsible for updating the game every frame that runs in a separate
-	 * thread.
-	 */
-	private Timer gameTimer;
-
-	private GameBoard gameBoard;
-
-	private final GameToolBar gameToolBar;
-
-	private List<KeyListener> keyListeners;
-
+	private final GameBoard gameBoard;
 	private HashMap<String, Image> imageCache;
 
-	public GameBoardUI(GameToolBar gameToolBar) {
-		this.gameToolBar = gameToolBar;
-		this.keyListeners = new LinkedList<>();
-		setup();
-	}
+	public GameBoardUI(GameBoard gameBoard) {
+		this.gameBoard = gameBoard;
+		this.toolBar = new GameToolBar(); // the tool bar object with start and stop buttons
 
-	public GameBoard getGameBoard() {
-		return gameBoard;
-	}
-
-	public List<KeyListener> getKeyListener() {
-		return keyListeners;
+		setup(gameBoard.getPlayer(), gameBoard.getAliens());
+		toolBar.initializeActions(this);
 	}
 
 	/**
 	 * Removes all existing entities from the game board and re-adds them. Player
 	 * cannon is reset to default starting position. Renders graphics.
 	 */
-	public void setup() {
-		setupGameBoard();
-		setupImageCache();
-		this.gameToolBar.updateToolBarStatus(false);
+	public void setup(Player player, List<Alien> aliens) {
+		setupImageCache(player, aliens);
 		paint();
 	}
 
-	private void setupGameBoard() {
-		Dimension2D size = getPreferredSize();
-		this.gameBoard = new GameBoard(size);
-		this.gameBoard.setAudioPlayer(new AudioPlayer());
-		widthProperty().set(size.getWidth());
-		heightProperty().set(size.getHeight());
-		for (Player player : this.gameBoard.getPlayers()) {
-			this.keyListeners.add(new KeyListener(this, player));
-		}
-
-	}
-
-	private void setupImageCache() {
+	private void setupImageCache(Player player, List<Alien> aliens) {
 		this.imageCache = new HashMap<>();
-		for (Entity entity : this.gameBoard.getAliens()) {
+		for (Entity entity : aliens) {
 			String imageLocation = entity.getIconLocation();
 			this.imageCache.computeIfAbsent(imageLocation, this::getImage);
 		}
 
-		for (Player player : this.gameBoard.getPlayers()) {
-			String playerImageLocation = player.getCannon().getIconLocation();
-			this.imageCache.put(playerImageLocation, getImage(playerImageLocation));
-		}
-
+		String playerImageLocation = player.getCannon().getIconLocation();
+		this.imageCache.put(playerImageLocation, getImage(playerImageLocation));
 	}
 
 	/**
@@ -128,71 +86,35 @@ public class GameBoardUI extends Canvas {
 	 * graphics and updates tool bar status.
 	 */
 	public void startGame() {
-		if (!this.gameBoard.isRunning()) {
-			this.gameBoard.startGame();
-			this.gameToolBar.updateToolBarStatus(true);
-			startTimer();
-			paint();
-		}
-	}
-
-	private void startTimer() {
-		TimerTask timerTask = new TimerTask() {
-			@Override
-			public void run() {
-				updateGame();
-			}
-		};
-		if (this.gameTimer != null) {
-			this.gameTimer.cancel();
-		}
-		this.gameTimer = new Timer();
-		this.gameTimer.scheduleAtFixedRate(timerTask, UPDATE_PERIOD, UPDATE_PERIOD);
+		this.toolBar.updateToolBarStatus(true);
+		paint();
 	}
 
 	private void updateGame() {
-		if (gameBoard.isRunning()) {
-			// updates entity positions and re-renders graphics
-			this.gameBoard.update();
-			// when this.gameBoard.getOutcome() is OPEN, do nothing
-			if (this.gameBoard.getGameOutcome() == GameOutcome.LOST) {
-				showAsyncAlert("Oh.. you lost.");
-				this.stopGame();
-			} else if (this.gameBoard.getGameOutcome() == GameOutcome.WON) {
-				showAsyncAlert("Congratulations! You won!!");
-				this.stopGame();
-			}
-			paint();
-		}
+		paint();
 	}
 
 	/**
 	 * Stops the game board and set the tool bar to default values.
 	 */
 	public void stopGame() {
-		if (this.gameBoard.isRunning()) {
-			this.gameBoard.stopGame();
-			this.gameToolBar.updateToolBarStatus(false);
-			this.gameTimer.cancel();
-		}
+		this.toolBar.updateToolBarStatus(false);
 	}
 
 	/**
 	 * Render the graphics of the whole game by iterating through the entities of
 	 * the game board at render each of them individually.
 	 */
-	private void paint() {
+	public void paint() {
 		getGraphicsContext2D().setFill(BACKGROUND_COLOR);
 		getGraphicsContext2D().fillRect(0, 0, getWidth(), getHeight());
 
 		for (Alien alien : this.gameBoard.getAliens()) {
 			paintEntity(alien);
 		}
-		// render player cannon
-		for (Player player : this.gameBoard.getPlayers()) {
-			paintEntity(player.getCannon());
-		}
 
+		// render player cannon
+		paintEntity(this.gameBoard.getPlayer().getCannon());
 	}
 
 	/**
@@ -212,12 +134,14 @@ public class GameBoardUI extends Canvas {
 	 *
 	 * @param message you want to display as a String
 	 */
-	private void showAsyncAlert(String message) {
+	public void showAsyncAlert(String message) {
 		Platform.runLater(() -> {
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setHeaderText(message);
 			alert.showAndWait();
-			this.setup();
 		});
 	}
+
+	public GameBoard getGameBoard() { return gameBoard; }
+	public GameToolBar getToolBar() { return toolBar; }
 }

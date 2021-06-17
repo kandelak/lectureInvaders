@@ -10,9 +10,14 @@ import java.util.Optional;
  * This class visualizes the tool bar with start and stop buttons above the game board.
  */
 public class GameToolBar extends ToolBar {
+    public enum GAME_TOOLBAR_ACTION {
+        START,
+        STOP,
+        SETTINGS
+    }
+
     private final Button start;
     private final Button stop;
-
 
     public GameToolBar() {
         this.start = new Button("Start");
@@ -27,34 +32,8 @@ public class GameToolBar extends ToolBar {
      * Initializes the actions of the toolbar buttons.
      */
     public void initializeActions(GameBoardUI gameBoardUI) {
-
-
-        this.start.setOnAction(event -> gameBoardUI.startGame());
-
-        this.stop.setOnAction(event -> {
-            // stop the game while the alert is shown
-            gameBoardUI.stopGame();
-
-            Alert alert = new Alert(AlertType.CONFIRMATION, "Do you really want to stop the game?", ButtonType.YES,
-                    ButtonType.NO);
-            alert.setTitle("Stop Game Confirmation");
-            // By default the header additionally shows the Alert Type (Confirmation)
-            // but we want to disable this to only show the question
-            alert.setHeaderText("");
-
-            Optional<ButtonType> result = alert.showAndWait();
-            // reference equality check is OK here because the result will return the same
-            // instance of the ButtonType
-            if (result.isPresent() && result.get() == ButtonType.YES) {
-                // reset the game board to prepare the new game
-                gameBoardUI.setup();
-            } else {
-                // continue running
-                gameBoardUI.startGame();
-            }
-        });
-
-
+        this.start.setOnAction(event -> gameBoardUI.getGameBoard().onAction(GAME_TOOLBAR_ACTION.START));
+        this.stop.setOnAction(event -> gameBoardUI.getGameBoard().onAction(GAME_TOOLBAR_ACTION.STOP));
     }
 
     /**
@@ -67,5 +46,4 @@ public class GameToolBar extends ToolBar {
         this.start.setDisable(running);
         this.stop.setDisable(!running);
     }
-
 }

@@ -1,12 +1,20 @@
 package main.View;
 
 import javafx.application.Application;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import main.Audio.AudioPlayer;
+import main.Controller.Dimension2D;
+import main.Controller.GameBoard;
 import main.Invaders;
+
+import static main.View.GameBoardUI.getPreferredSize;
 
 /**
  * Starts the Invaders Application, loads the GameToolBar and GameBoardUI. This
@@ -19,6 +27,7 @@ public class InvadersApplication extends Application {
 	private static final int GRID_LAYOUT_PADDING = 5;
 	private static final int GRID_LAYOUT_PREF_HEIGHT = 350;
 	private static final int GRID_LAYOUT_PREF_WIDTH = 505;
+	private GameBoard gameBoard;
 
 	/**
 	 * Starts the Bumpers Window by setting up a new tool bar, a new user interface
@@ -29,19 +38,25 @@ public class InvadersApplication extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) {
-		// the tool bar object with start and stop buttons
-		GameToolBar toolBar = new GameToolBar();
-		GameBoardUI gameBoardUI = new GameBoardUI(toolBar);
-		toolBar.initializeActions(gameBoardUI);
-
-		Pane gridLayout = createLayout(gameBoardUI, toolBar);
+		setupGameBoard();
+		Pane gridLayout = createLayout(this.gameBoard.getGameBoardUI(), this.gameBoard.getGameBoardUI().getToolBar());
 
 		// scene and stages
 		Scene scene = new Scene(gridLayout);
 		primaryStage.setTitle("LectureInvaders");
 		primaryStage.setScene(scene);
-		primaryStage.setOnCloseRequest(closeEvent -> gameBoardUI.stopGame());
+		//scene.setOnKeyPressed(keyEvent -> this.gameBoard.getKeyListener().keyPressed(keyEvent));
+		scene.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> this.gameBoard.getKeyListener().keyPressed(keyEvent));
+		primaryStage.setOnCloseRequest(closeEvent -> this.gameBoard.getGameBoardUI().stopGame());
 		primaryStage.show();
+	}
+
+	private void setupGameBoard() {
+		Dimension2D size = getPreferredSize();
+		this.gameBoard = new GameBoard(size);
+		this.gameBoard.setAudioPlayer(new AudioPlayer());
+		this.gameBoard.getGameBoardUI().widthProperty().set(size.getWidth());
+		this.gameBoard.getGameBoardUI().heightProperty().set(size.getHeight());
 	}
 
 	/**

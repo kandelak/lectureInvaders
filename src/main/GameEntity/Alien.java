@@ -1,6 +1,7 @@
 package main.GameEntity;
 
 import main.Controller.Dimension2D;
+import main.View.GameBoardUI;
 
 public class Alien extends Entity {
 
@@ -12,11 +13,15 @@ public class Alien extends Entity {
         setIconLocation(ALIEN_IMAGE_FILE);
     }
 
+    public void moveDown(double amount) {
+        double oldY = getPosition().getY();
 
-    public void moveDown(double step, Dimension2D size) {
+        // don't exceed max position to the top and bottom
+        if (	(amount < 0 && oldY <= 0) ||
+                oldY + amount + getSize().getHeight() >= GameBoardUI.getPreferredSize().getHeight())
+            return;
 
-        //The subclasses of Entity should not have a position attribute
-
-        //this.position = new Point2D(position.getX(), position.getY() + step);
+        // oldY + amount moves the cannon vertically; x point remains always the same
+        setPosition(getPosition().getX(), oldY + amount);
     }
 }

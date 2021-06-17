@@ -6,6 +6,10 @@ import main.Controller.Point2D;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Entity {
+    public enum ENTITY_TYPE {
+        CANNON,
+        ALIEN
+    }
 
     //TODO: The add, remove observer methods and the notify method are still missing here for our observer pattern
 
@@ -19,6 +23,7 @@ public abstract class Entity {
     protected static final int DEFAULT_CAR_WIDTH = 120;
     protected static final int DEFAULT_CAR_HEIGHT = 70;
 
+    private ENTITY_TYPE type;
     private int minSpeed;
     private int maxSpeed;
     private int speed;
@@ -143,6 +148,14 @@ public abstract class Entity {
 
     public int getSpeed() {
         return this.speed;
+    }
+
+    public ENTITY_TYPE getType() {
+        return type;
+    }
+
+    public void setType(ENTITY_TYPE type) {
+        this.type = type;
     }
 
     /**
