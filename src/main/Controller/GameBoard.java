@@ -1,8 +1,6 @@
 package main.Controller;
 
-import java.time.Instant;
-import java.time.LocalTime;
-import java.util.*;
+
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -13,13 +11,19 @@ import main.View.GameBoardUI;
 import main.View.GameToolBar;
 
 
-public class GameBoard {
+import java.time.Instant;
+import java.time.LocalTime;
+import java.util.*;
+
+
+public class GameBoard implements Observer {
 
     private static final int UPDATE_PERIOD = 1000 / 25; // The update period of the game in ms, this gives us 25 fps
-    private static final int NUMBER_OF_ALIENS = 15;
-    private static final double DEFAULT_ALIEN_STEP = 1.0;
-    private final static double DEFAULT_CANNON_STEP = 3.0;
-    private final static double DEFAULT_BOLT_STEP = -5.0;
+    private static final int NUMBER_OF_ALIENS = 8;
+    private static final double DEFAULT_ALIEN_STEP = 4.5;
+    private final static double DEFAULT_CANNON_STEP = 14.0;
+    private final static double DEFAULT_BOLT_STEP = -17.0;
+
     private final static int PLAYER_LIFE_POINTS = 3;
     private AudioPlayerInterface audioPlayer;
     private GameOutcome gameOutcome = GameOutcome.OPEN;
@@ -28,17 +32,22 @@ public class GameBoard {
     private final Dimension2D size;
 
     private boolean running;
-    private Timer gameTimer; // Timer responsible for updating the game every frame that runs in a separat thread
+
+    private Timer gameTimer; // Timer responsible for updating the game every frame that runs in a separate thread
+
     private long shootingCooldownTimestamp = 0;
 
     // Services
     private GameBoardUI gameBoardUI;
     private KeyListener keyListener;
-    List<Alien> aliens = new ArrayList<>();
-    Player player;
+
+    private List<Alien> aliens = new ArrayList<>();
     private List<LaserBolt> laserBolts = new ArrayList<>();
-    private static final long CANNON_COOLDOWN_TIMEOUT = 600;
+    private Player player;
     private DataCollector dataCollector = new DataCollector();
+
+    private static final long CANNON_COOLDOWN_TIMEOUT = 300;
+
 
     public GameBoard(Dimension2D size) {
         this.size = size;
@@ -46,7 +55,10 @@ public class GameBoard {
         // create entities
         player = new Player(PLAYER_LIFE_POINTS, new Cannon(this.size));
         player.setup();
-        player.getCannon().setPosition(size.getWidth() / 2.0, size.getHeight() * 0.85);
+
+        // Manually update start position of Cannon
+        player.getCannon().setPosition(size.getWidth() / 2.0, size.getHeight() - 200);
+
         createAliens();
 
         // create UI and keyListener
@@ -60,13 +72,12 @@ public class GameBoard {
     private void createAliens() {
         for (int i = 0; i < NUMBER_OF_ALIENS; i++) {
             aliens.add(new Alien(this.size));
+
+
         }
-        positionAliens();
     }
 
-    private void positionAliens() {
 
-    }
 
     private void startTimer() {
         TimerTask timerTask = new TimerTask() {
@@ -98,7 +109,7 @@ public class GameBoard {
                 // instance of the ButtonType
                 if (result.isPresent() && result.get() == ButtonType.YES) {
                     // TODO: reset game?
-                    this.stopGame();
+
                     System.exit(0);
                 }
             }
@@ -117,12 +128,15 @@ public class GameBoard {
             gameBoardUI.showAsyncAlert("Congratulations! You won!!");
             stopGame();
         }
+
         updateEntities();
         gameBoardUI.paint();
     }
 
     public void startGame() {
+
         dataCollector.setStart(LocalTime.now());
+
         playMusic();
         gameBoardUI.startGame();
         startTimer();
@@ -138,12 +152,14 @@ public class GameBoard {
         gameBoardUI.stopGame();
         this.gameTimer.cancel();
         this.running = false;
+
         dataCollector.setEnd(LocalTime.now());
         try {
             dataCollector.writeData();
         } catch (Exception e) {
             System.err.println("Couldn't wright data!");
         }
+
     }
 
     /**
@@ -154,9 +170,16 @@ public class GameBoard {
         for (Alien alien : aliens)
             alien.moveVertically(DEFAULT_ALIEN_STEP);
 
+        aliens.removeIf(alien -> alien.getPosition().getY() > size.getHeight());
+
+        //Adds a new Alien, if one got shot down, and was therefore removed from the list
+        if (aliens.size() < NUMBER_OF_ALIENS)
+            aliens.add(new Alien(size));
+
         for (LaserBolt bolt : laserBolts)
             bolt.moveVertically(DEFAULT_BOLT_STEP);
-        laserBolts.removeIf(laserBolt -> laserBolt.getPosition().getY() < -100);
+        laserBolts.removeIf(laserBolt -> laserBolt.getPosition().getY() < -10);
+
 
         if (keyListener.getKeysPressed().contains(KeyCode.RIGHT) || keyListener.getKeysPressed().contains(KeyCode.D))
             player.getCannon().moveHorizontally(DEFAULT_CANNON_STEP);

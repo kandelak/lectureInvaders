@@ -1,5 +1,6 @@
 package main.Controller;
 
+
 import javax.xml.crypto.Data;
 import java.io.*;
 import java.time.Duration;
@@ -16,15 +17,14 @@ public class DataCollector {
     private LocalTime end;
     private int monstersShoot = 0;
 
+
     // how boring the lecture was
     // more lectureScore -> more boring
     long lectureScore;
 
-
     void incrementMonstersShoot() {
         monstersShoot++;
     }
-
 
     /**
      * Evaluates data at the end and stores it if necessary
@@ -75,6 +75,7 @@ public class DataCollector {
 
     public void setEnd(LocalTime end) {
         this.end = end;
+
     }
 
 

@@ -1,7 +1,6 @@
 package main.View;
 
-import java.net.URL;
-import java.util.*;
+
 
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
@@ -11,9 +10,11 @@ import javafx.scene.paint.Color;
 import main.Controller.Dimension2D;
 import main.Controller.GameBoard;
 import main.Controller.Point2D;
-import main.GameEntity.Alien;
+
 import main.GameEntity.Entity;
-import main.GameEntity.Player;
+
+import java.net.URL;
+import java.util.HashMap;
 
 /**
  * This class implements the user interface for steering the player cannon. The
@@ -25,7 +26,9 @@ public class GameBoardUI extends Canvas {
     private static final Color BACKGROUND_COLOR = Color.DARKBLUE;
 
     private static final int DEFAULT_WIDTH = 1000;
-    private static final int DEFAULT_HEIGHT = 500;
+
+    private static final int DEFAULT_HEIGHT = 1200;
+
     private static final Dimension2D DEFAULT_SIZE = new Dimension2D(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
     private final GameToolBar toolBar;
@@ -97,6 +100,11 @@ public class GameBoardUI extends Canvas {
     public void paint() {
         getGraphicsContext2D().setFill(BACKGROUND_COLOR);
         getGraphicsContext2D().fillRect(0, 0, getWidth(), getHeight());
+
+        getGraphicsContext2D().setStroke(Color.BLACK);
+        getGraphicsContext2D().setLineWidth(10);
+        getGraphicsContext2D().strokePolyline(new double[]{0, 1000}, new double[]{1075, 1075}, 2);
+
 
         for (Entity entity : this.gameBoard.getEntities()) {
             this.imageCache.computeIfAbsent(entity.getIconLocation(), this::getImage);
