@@ -8,7 +8,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class Entity {
     public enum ENTITY_TYPE {
         CANNON,
-        ALIEN
+        ALIEN,
+        LASERBOLT
     }
 
     //TODO: The add, remove observer methods and the notify method are still missing here for our observer pattern
@@ -20,8 +21,8 @@ public abstract class Entity {
     protected static final int MAX_ANGLE = 360;
     protected static final int HALF_ANGLE = MAX_ANGLE / 2;
 
-    protected static final int DEFAULT_CAR_WIDTH = 120;
-    protected static final int DEFAULT_CAR_HEIGHT = 70;
+    protected static final int DEFAULT_ENTITY_WIDTH = 120;
+    protected static final int DEFAULT_ENTITY_HEIGHT = 70;
 
     private ENTITY_TYPE type;
     private int minSpeed;
@@ -38,7 +39,7 @@ public abstract class Entity {
     private int direction;
 
     private String iconLocation;
-    private Dimension2D size = new Dimension2D(DEFAULT_CAR_WIDTH, DEFAULT_CAR_HEIGHT);
+    private Dimension2D size = new Dimension2D(DEFAULT_ENTITY_WIDTH, DEFAULT_ENTITY_HEIGHT);
 
     /**
      * Constructor, taking the maximum coordinates of the game board. Each car gets
@@ -61,13 +62,19 @@ public abstract class Entity {
      * @param gameBoardSize dimensions of the game board
      */
     protected void setRandomPosition(Dimension2D gameBoardSize) {
-        double carX = calculateRandomDouble(0, gameBoardSize.getWidth() - size.getWidth());
-        double carY = calculateRandomDouble(0, gameBoardSize.getHeight() - size.getHeight());
-        this.position = new Point2D(carX, carY);
+        double entityX = calculateRandomDouble(0, gameBoardSize.getWidth() - size.getWidth());
+        double entityY = calculateRandomDouble(0, gameBoardSize.getHeight() - size.getHeight());
+        this.position = new Point2D(entityX, entityY);
     }
 
     protected void setRandomDirection() {
         this.direction = calculateRandomInt(0, MAX_ANGLE);
+    }
+
+    protected void setStartPositionAlien(Dimension2D gameBoardSize) {
+        double entityX = calculateRandomDouble(0, gameBoardSize.getWidth() - size.getWidth());
+        double entityY = calculateRandomDouble(-100, -30);
+        this.position = new Point2D(entityX, entityY);
     }
 
     /**
@@ -200,6 +207,7 @@ public abstract class Entity {
     public void setPosition(double x, double y) {
         this.position = new Point2D(x, y);
     }
+
     public void setPosition(Point2D point) {
         setPosition(point.getX(), point.getY());
     }

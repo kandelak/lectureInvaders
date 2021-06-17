@@ -1,6 +1,8 @@
 package main.View;
 
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Separator;
+import javafx.scene.control.ToolBar;
 
 /**
  * This class visualizes the tool bar with start and stop buttons above the game board.

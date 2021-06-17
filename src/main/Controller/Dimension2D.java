@@ -37,9 +37,11 @@ public record Dimension2D(double width, double height) {
         return String.format(Locale.ROOT, "Dimension2D [width=%.2f, height=%.2f]", width, height);
     }
 
-    public Dimension2D scale(double factor){
+    public Dimension2D scale(double factor) {
         return new Dimension2D(width * factor, height * factor);
     }
 
-    public Point2D toPoint(){ return new Point2D(width, height); }
+    public Point2D toPoint() {
+        return new Point2D(width, height);
+    }
 }
