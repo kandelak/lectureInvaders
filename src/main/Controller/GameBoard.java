@@ -175,8 +175,35 @@ public class GameBoard implements Observer {
 	 * is pressed.
 	 */
 	void updateEntities() {
-		for (Alien alien : aliens)
-			alien.moveVertically(DEFAULT_ALIEN_STEP);
+		for (Alien alien : aliens) {
+			// Firstly, check wether the alien has been shot or not
+			boolean collided = false;
+
+			for (LaserBolt lb : laserBolts) {
+				if (laserVSalien.detectCollision(lb, alien)) {
+					aliens.remove(alien);
+					collided = true;
+					break;
+				}
+			}
+
+			// if not, then move alien and check, if an alien collided with the canon
+			// BIG TODO: WE normally dont have to check if an alien collides with the
+			// cannon, we just have to check if an alien reached the certain y point, if yes
+			// we can decrement the life of the player.
+			if (!collided) {
+				alien.moveVertically(DEFAULT_ALIEN_STEP);
+
+				if (cannonVSalien.detectCollision(player.getCannon(), alien)) {
+					player.decrementLifePoints();
+
+					if (player.getPlayerLifePoints() == 0) {
+						gameOutcome = GameOutcome.LOST;
+						running = false;
+					}
+				}
+			}
+		}
 
 		aliens.removeIf(alien -> alien.getPosition().getY() > size.getHeight());
 
