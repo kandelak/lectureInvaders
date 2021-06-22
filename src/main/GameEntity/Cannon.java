@@ -28,4 +28,8 @@ public class Cannon extends Entity {
         setPosition(oldX + amount, getPosition().getY());
     }
 
+    public void setup() {
+        //setPosition(getSize().getWidth() / 2.0, getSize().getHeight() - 200);
+    }
+
 }

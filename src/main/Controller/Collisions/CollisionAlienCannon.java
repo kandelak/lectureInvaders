@@ -11,10 +11,10 @@ public class CollisionAlienCannon extends Collision {
 	}
 
 	/**
-	 * This method tests wether there is a collision between a CannonEntity and an
+	 * This method tests whether there is a collision between a CannonEntity and an
 	 * AlienEntity or not. if yes, this method will return true, which basically
 	 * means, that the Cannon/Player should lose a life.
-	 * 
+	 *
 	 * @param one must be the {@link Cannon}
 	 * @param two must be the {@link Alien}
 	 */

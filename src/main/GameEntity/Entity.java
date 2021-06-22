@@ -1,9 +1,9 @@
 package main.GameEntity;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 import main.Controller.Dimension2D;
 import main.Controller.Point2D;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Entity {
 	public enum ENTITY_TYPE {
@@ -25,9 +25,9 @@ public abstract class Entity {
 	protected static final int DEFAULT_ENTITY_HEIGHT = 70;
 
 	private ENTITY_TYPE type;
-	private int minSpeed;
-	private int maxSpeed;
-	private int speed;
+	private static final int MINIMAL_SPEED = 4;
+	private static final int MAXIMUM_SPEED = 9;
+	private double speed;
 	private boolean crunched;
 
 	private Point2D position;
@@ -35,7 +35,7 @@ public abstract class Entity {
 	 * The direction as degree within a circle, a value between 0 (inclusive) and
 	 * 360 (exclusive).
 	 */
-	private int direction;
+	private double direction;
 
 	private String iconLocation;
 
@@ -85,7 +85,7 @@ public abstract class Entity {
 	 */
 	protected void setRandomSpeed() {
 		// We pass this.maxSpeed + 1 to include the value of maxSpeed
-		this.speed = calculateRandomInt(this.minSpeed, this.maxSpeed + 1);
+		this.speed = calculateRandomInt(MINIMAL_SPEED, MAXIMUM_SPEED + 1);
 	}
 
 	/**
@@ -152,11 +152,11 @@ public abstract class Entity {
 		this.direction = direction;
 	}
 
-	public int getDirection() {
+	public double getDirection() {
 		return this.direction;
 	}
 
-	public int getSpeed() {
+	public double getSpeed() {
 		return this.speed;
 	}
 
@@ -172,7 +172,7 @@ public abstract class Entity {
 	 * Increments the car's speed, won't exceed the maximum speed.
 	 */
 	public void incrementSpeed() {
-		if (this.speed < this.maxSpeed) {
+		if (this.speed < MAXIMUM_SPEED) {
 			this.speed++;
 		}
 	}
@@ -181,7 +181,7 @@ public abstract class Entity {
 	 * Decrements the car's speed, won't fall below the minimum speed.
 	 */
 	public void decrementSpeed() {
-		if (this.speed > this.minSpeed) {
+		if (this.speed > MINIMAL_SPEED) {
 			this.speed--;
 		}
 	}
@@ -233,23 +233,15 @@ public abstract class Entity {
 	}
 
 	public int getMaxSpeed() {
-		return this.maxSpeed;
+		return MAXIMUM_SPEED;
 	}
 
 	public int getMinSpeed() {
-		return this.minSpeed;
+		return MINIMAL_SPEED;
 	}
 
-	public void setSpeed(int speed) {
+	public void setSpeed(double speed) {
 		this.speed = speed;
-	}
-
-	public void setMaxSpeed(int maxSpeed) {
-		this.maxSpeed = maxSpeed;
-	}
-
-	public void setMinSpeed(int minSpeed) {
-		this.minSpeed = minSpeed;
 	}
 
 	/**
@@ -260,8 +252,8 @@ public abstract class Entity {
 	 * @param maxValue the exclusive upper bound
 	 * @return a random int value
 	 */
-	protected static int calculateRandomInt(int minValue, int maxValue) {
-		return ThreadLocalRandom.current().nextInt(minValue, maxValue);
+	protected static double calculateRandomInt(int minValue, int maxValue) {
+		return ThreadLocalRandom.current().nextDouble(minValue, maxValue);
 	}
 
 	/**

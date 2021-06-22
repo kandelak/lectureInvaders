@@ -12,13 +12,13 @@ public abstract class Collision {
 	// most point on our canvas is (0|0).
 
 	/**
-	 * This method tests wether there is a collision between an Entity and an
+	 * This method tests whether there is a collision between an Entity and an
 	 * AlienEntity or not.
-	 * 
+	 * <p>
 	 * If a collision between Laser and Alien is tested, the Alien will lose.
-	 * 
+	 * <p>
 	 * If a collision between Cannon and Alien is tested, the cannon will lose.
-	 * 
+	 *
 	 * @param one must be an {@link Entity} except Alien; e.g. Cannon or Laser
 	 * @param two must be the {@link Alien}
 	 */

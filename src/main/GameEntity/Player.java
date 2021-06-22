@@ -11,11 +11,8 @@ public class Player {
     private static final int DEFAULT_LIFE_POINTS = 4;
     private int playerLifePoints;
 
-    public Player(int playerLifePoints, Cannon cannon) {
-        if (playerLifePoints <= 0)
-            this.playerLifePoints = DEFAULT_LIFE_POINTS;
-        else
-            this.playerLifePoints = playerLifePoints;
+    public Player(Cannon cannon) {
+        this.playerLifePoints = DEFAULT_LIFE_POINTS;
         this.cannon = cannon;
 
     }
@@ -29,6 +26,8 @@ public class Player {
      */
     public void setup() {
         cannon.setDirection(START_DIRECTION);
+        cannon.setup();
+        this.playerLifePoints = DEFAULT_LIFE_POINTS;
     }
 
     public int getPlayerLifePoints() {
