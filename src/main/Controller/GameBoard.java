@@ -14,6 +14,7 @@ import main.View.GameToolBar;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameBoard implements Observer {
 
@@ -46,7 +47,7 @@ public class GameBoard implements Observer {
 
     private final Dimension2D size;
 
-    private boolean running;
+    private AtomicBoolean running = new AtomicBoolean();
 
     private Timer gameTimer; // Timer responsible for updating the game every frame that runs in a separate
     // thread
@@ -93,7 +94,6 @@ public class GameBoard implements Observer {
     private void createAliens() {
         for (int i = 0; i < NUMBER_OF_ALIENS; i++) {
             aliens.add(new Alien(this.size));
-
         }
     }
 
@@ -167,7 +167,7 @@ public class GameBoard implements Observer {
         playMusic();
         gameBoardUI.startGame();
         startTimer();
-        this.running = true;
+        this.running.set(true);
     }
 
     /**
@@ -178,13 +178,13 @@ public class GameBoard implements Observer {
         stopMusic();
         gameBoardUI.stopGame();
         this.gameTimer.cancel();
-        this.running = false;
+        this.running.set(false);
 
         dataCollector.setEnd(LocalTime.now());
         try {
             dataCollector.writeData();
         } catch (Exception e) {
-            System.err.println("Couldn't wright data!");
+            System.err.println("Couldn't write data!");
         }
 
     }
@@ -208,10 +208,7 @@ public class GameBoard implements Observer {
             return collision;
         });
 
-        if (player.getPlayerLifePoints() == 0) {
-            gameOutcome = GameOutcome.LOST;
-            running = false;
-        }
+
         // if not, then move alien and check, if an alien collided with the canon
         // BIG TODO: WE normally dont have to check if an alien collides with the
         // cannon, we just have to check if an alien reached the certain y point, if yes
@@ -221,7 +218,10 @@ public class GameBoard implements Observer {
             alien.moveVertically();
         }
 
-
+        if (player.getPlayerLifePoints() == 0) {
+            gameOutcome = GameOutcome.LOST;
+            this.running.set(false);
+        }
         // Adds a new Alien, if one got shot down, and was therefore removed from the
         // list
         if (aliens.size() < NUMBER_OF_ALIENS)
@@ -266,12 +266,12 @@ public class GameBoard implements Observer {
         this.audioPlayer.stopBackgroundMusic();
     }
 
-    public boolean isRunning() {
+    public AtomicBoolean isRunning() {
         return this.running;
     }
 
     public void setRunning(boolean running) {
-        this.running = running;
+        this.running.set(running);;
     }
 
     public GameOutcome getGameOutcome() {
@@ -306,5 +306,15 @@ public class GameBoard implements Observer {
 
     public KeyListener getKeyListener() {
         return this.keyListener;
+    }
+
+    public void test(){
+        for(Alien alien: aliens){
+            if(alien.crossedLine() && !alien.isCrossedLine()){
+                player.decrementLifePoints();
+                alien.setCrossedLine(true);
+            }
+        }
+
     }
 }

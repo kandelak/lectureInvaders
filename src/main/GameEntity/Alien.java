@@ -3,13 +3,14 @@ package main.GameEntity;
 import main.Controller.Dimension2D;
 import main.View.GameBoardUI;
 
-public class Alien extends Entity {
+public class Alien extends Entity{
     private static final String ALIEN_IMAGE_FILE = "Alien.png";
 
     private static final double DEFAULT_WIDTH_ALIEN = 55.0;
     private static final double DEFAULT_HEIGHT_ALIEN = 30.0;
     private static final int ALIEN_MINIMAL_SPEED = 4;
     private static final int ALIEN_MAXIMUM_SPEED = 8;
+
 
     public Alien(Dimension2D gameBoardSize) {
         super(gameBoardSize);
@@ -38,5 +39,11 @@ public class Alien extends Entity {
     protected void setRandomSpeed() {
         // We pass this.maxSpeed + 1 to include the value of maxSpeed
         setSpeed(calculateRandomInt(ALIEN_MINIMAL_SPEED, ALIEN_MAXIMUM_SPEED + 1));
+    }
+
+    public void incSpeed(TestInterface testInterface){
+        if(testInterface.t1(getSpeed(),ALIEN_MAXIMUM_SPEED)){
+            setSpeed(getSpeed()+1);
+        }
     }
 }
