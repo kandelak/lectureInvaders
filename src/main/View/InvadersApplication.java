@@ -24,8 +24,8 @@ public class InvadersApplication extends Application {
 
 
     private static final int GRID_LAYOUT_PADDING = 5;
-    private static final int GRID_LAYOUT_PREF_HEIGHT = 1200;
-    private static final int GRID_LAYOUT_PREF_WIDTH = 1000;
+    private static final int GRID_LAYOUT_PREF_HEIGHT = 950;
+    private static final int GRID_LAYOUT_PREF_WIDTH = 800;
 
     private GameBoard gameBoard;
 

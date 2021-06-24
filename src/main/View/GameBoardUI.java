@@ -1,7 +1,6 @@
 package main.View;
 
 
-
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
@@ -10,7 +9,6 @@ import javafx.scene.paint.Color;
 import main.Controller.Dimension2D;
 import main.Controller.GameBoard;
 import main.Controller.Point2D;
-
 import main.GameEntity.Entity;
 
 import java.net.URL;
@@ -25,9 +23,9 @@ public class GameBoardUI extends Canvas {
 
     private static final Color BACKGROUND_COLOR = Color.DARKBLUE;
 
-    private static final int DEFAULT_WIDTH = 1000;
+    private static final int DEFAULT_WIDTH = 800;
 
-    private static final int DEFAULT_HEIGHT = 1200;
+    private static final int DEFAULT_HEIGHT = 950;
 
     private static final Dimension2D DEFAULT_SIZE = new Dimension2D(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
@@ -103,7 +101,7 @@ public class GameBoardUI extends Canvas {
 
         getGraphicsContext2D().setStroke(Color.BLACK);
         getGraphicsContext2D().setLineWidth(10);
-        getGraphicsContext2D().strokePolyline(new double[]{0, 1000}, new double[]{1075, 1075}, 2);
+        getGraphicsContext2D().strokePolyline(new double[]{0, 800}, new double[]{825, 825}, 2);
 
 
         for (Entity entity : this.gameBoard.getEntities()) {
