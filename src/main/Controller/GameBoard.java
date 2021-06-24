@@ -17,6 +17,7 @@ import java.util.*;
 
 public class GameBoard implements Observer {
 
+    //TODO: Adjust screen size to monitor size (at least on y-axis)
     //TODO: Display in-game score
     //TODO: Display an end score on how boring the lecture was (lecture score)
     //TODO: Display lifepoints of player
@@ -27,6 +28,7 @@ public class GameBoard implements Observer {
     //TODO: put the speed of the other entities in their respective classes
     //TODO: Implement the observer (or any other) pattern correctly
     //TODO: Clean up code etc.
+    //Optional: Add multiplayer mode (local or even online)
     //Optional: Add items that give the players cannon special abilities
     //Optional: Add a settings menu where things like speed, controls and music volume can be changed
     //Optional: Add other types of aliens
