@@ -4,11 +4,11 @@ import main.Controller.Dimension2D;
 import main.Controller.Point2D;
 import main.GameEntity.Entity;
 
-public interface CollisionImplementor {
+public abstract class CollisionImplementor {
 
-	boolean evaluate(Entity one, Entity two);
+	public abstract boolean evaluate(Entity one, Entity two);
 
-	default boolean detectCollision(Entity one, Entity two) {
+	boolean detectCollision(Entity one, Entity two) {
 		Point2D p1 = one.getPosition();
 		Dimension2D d1 = one.getSize();
 
@@ -22,4 +22,5 @@ public interface CollisionImplementor {
 
 		return !above && !below && !right && !left;
 	}
+
 }

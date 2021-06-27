@@ -4,7 +4,7 @@ import main.GameEntity.Alien;
 import main.GameEntity.Entity;
 import main.GameEntity.LaserBolt;
 
-public class AlienLaserCollisionImpl implements CollisionImplementor {
+public class LaserAlienCollisionImpl extends CollisionImplementor {
 
 	/**
 	 * This method tests whether there is a collision between a LaserEntity and an

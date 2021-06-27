@@ -6,28 +6,35 @@ package main.Audio;
  */
 public interface AudioPlayerInterface {
 
-    /**
-     * Starts playing the background music if it's not started already.
-     */
-    void playBackgroundMusic();
+	/**
+	 * Starts playing the background music if it's not started already.
+	 */
+	void playBackgroundMusic();
 
-    /**
-     * Stops the background music if it is currently playing.
-     */
-    void stopBackgroundMusic();
+	/**
+	 * Stops the background music if it is currently playing.
+	 */
+	void stopBackgroundMusic();
 
-    /**
-     * Checks if the background music is playing.
-     *
-     * @return true if background music is playing, false if not
-     */
-    boolean isPlayingBackgroundMusic();
+	/**
+	 * Checks if the background music is playing.
+	 *
+	 * @return true if background music is playing, false if not
+	 */
+	boolean isPlayingBackgroundMusic();
 
-    /**
-     * Plays the crash sound effect.
-     */
-    void playCrashSound();
+	/**
+	 * Plays the crash sound effect of the player.
+	 * <p>
+	 * If killed, then the killedSound will be played.
+	 * <p>
+	 * Otherwise, lostLifeSound will be played.
+	 */
+	void playPlayerCrashSound(boolean killed);
 
-
+	/**
+	 * Plays the crash sound effect of the player.
+	 */
+	void playAlienCrashSound();
 
 }
