@@ -45,7 +45,7 @@ public class ArtemisTests {
 
         alien.setSpeed(3.0);
         // The method t1 should check, whether the actual speed can be incremented or not
-        expect(testMock.t1(alien.getSpeed(), 8)).andReturn(true);
+        expect(testMock.testSpeed(alien.getSpeed(), 8)).andReturn(true);
         replay(testMock);
 
         alien.incSpeed(testMock);
