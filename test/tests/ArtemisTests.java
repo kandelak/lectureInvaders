@@ -1,35 +1,21 @@
 package tests;
 
-import javafx.stage.Stage;
-import main.Audio.AudioPlayer;
 import main.Controller.Collisions.AlienLaserCollisionImpl;
-import main.Controller.Collisions.Collision;
-import main.Controller.Collisions.CollisionImplementor;
 import main.Controller.Dimension2D;
 import main.Controller.GameBoard;
 import main.Controller.Point2D;
 import main.GameEntity.*;
-import main.Invaders;
-import main.View.InvadersApplication;
 import org.easymock.EasyMockExtension;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
-import org.easymock.internal.matchers.Null;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import javax.imageio.stream.ImageInputStream;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.easymock.EasyMock.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static main.View.GameBoardUI.getPreferredSize;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(EasyMockExtension.class)
 public class ArtemisTests {
