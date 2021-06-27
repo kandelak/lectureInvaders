@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameBoard implements Observer {
 
-    //TODO: Adjust screen size to monitor size (at least on y-axis)
     //TODO: Display in-game score
     //TODO: Display an end score on how boring the lecture was (lecture score)
     //TODO: Display lifepoints of player
@@ -208,12 +207,6 @@ public class GameBoard implements Observer {
             return collision;
         });
 
-
-        // if not, then move alien and check, if an alien collided with the canon
-        // BIG TODO: WE normally dont have to check if an alien collides with the
-        // cannon, we just have to check if an alien reached the certain y point, if yes
-        // we can decrement the life of the player.
-
         for (Alien alien : aliens) {
             alien.moveVertically();
         }
@@ -306,15 +299,5 @@ public class GameBoard implements Observer {
 
     public KeyListener getKeyListener() {
         return this.keyListener;
-    }
-
-    public void test(){
-        for(Alien alien: aliens){
-            if(alien.crossedLine() && !alien.isCrossedLine()){
-                player.decrementLifePoints();
-                alien.setCrossedLine(true);
-            }
-        }
-
     }
 }

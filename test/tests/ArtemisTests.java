@@ -1,6 +1,5 @@
 package tests;
 
-import main.Controller.Collisions.AlienCannonCollisionImpl;
 import main.Controller.Dimension2D;
 import main.GameEntity.Alien;
 import main.GameEntity.TestInterface;
@@ -13,29 +12,33 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(EasyMockExtension.class)
-public class MockTests {
-
-    //TODO: Write 9 Test cases!
+public class ArtemisTests {
 
     @Mock
     TestInterface testMock;
 
     @TestSubject
-    Alien alien= new Alien(new Dimension2D(1000,1000));
+    Alien alien = new Alien(new Dimension2D(1000, 1000));
 
-    @Test
-    public void testMockObject(){
+    @org.junit.jupiter.api.Test
+    public void testMockObject() {
 
         alien.setSpeed(3.0);
         // The method t1 should check, whether the actual speed can be incremented or not
-        expect(testMock.t1(3.0,8)).andReturn(true);
+        expect(testMock.t1(alien.getSpeed(), 8)).andReturn(true);
         replay(testMock);
 
         alien.incSpeed(testMock);
 
-        assertEquals(4.0,alien.getSpeed());
+        assertEquals(4.0, alien.getSpeed());
+    }
+
+    @Test
+    public void test() {
+        //TODO: Write 9 Test cases!
+
+
     }
 }

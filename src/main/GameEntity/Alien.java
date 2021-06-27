@@ -42,8 +42,13 @@ public class Alien extends Entity{
     }
 
     public void incSpeed(TestInterface testInterface){
-        if(testInterface.t1(getSpeed(),ALIEN_MAXIMUM_SPEED)){
+        /*if(getSpeed()<ALIEN_MAXIMUM_SPEED){
             setSpeed(getSpeed()+1);
+        }*/
+
+
+        if (testInterface.t1(getSpeed(), ALIEN_MAXIMUM_SPEED)) {
+            setSpeed(getSpeed() + 1);
         }
     }
 }
