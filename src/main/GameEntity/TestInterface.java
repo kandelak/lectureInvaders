@@ -2,5 +2,5 @@ package main.GameEntity;
 
 public interface TestInterface {
 
-    public boolean t1(double actualSpeed, int maxSpeed);
+    boolean testSpeed(double actualSpeed, int maxSpeed);
 }

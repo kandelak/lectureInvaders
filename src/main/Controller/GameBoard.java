@@ -27,6 +27,8 @@ public class GameBoard implements Observer {
     //TODO: Change the messages when starting/stopping/loosing and winning the game (more creative)
     //TODO: put the speed of the other entities in their respective classes
     //TODO: Implement the observer (or any other) pattern correctly
+    //TODO: Implement configurable lecture times for the user (see T01E01)
+    //TODO: Write 9 tests
     //TODO: Clean up code etc.
     //Optional: Add multiplayer mode (local or even online)
     //Optional: Add items that give the players cannon special abilities
@@ -264,7 +266,7 @@ public class GameBoard implements Observer {
     }
 
     public void setRunning(boolean running) {
-        this.running.set(running);;
+        this.running.set(running);
     }
 
     public GameOutcome getGameOutcome() {
