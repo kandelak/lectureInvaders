@@ -12,6 +12,10 @@ public class Player {
     private int playerLifePoints;
 
     public Player(Cannon cannon) {
+        if (cannon == null) {
+            System.err.println("Player can not be created without Canon");
+            throw new IllegalArgumentException();
+        }
         this.playerLifePoints = DEFAULT_LIFE_POINTS;
         this.cannon = cannon;
 

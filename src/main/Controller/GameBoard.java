@@ -1,5 +1,6 @@
 package main.Controller;
 
+import com.sun.net.httpserver.Authenticator;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
@@ -18,6 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameBoard implements Observer {
 
+    //TODO: Adjust screen size to monitor size (at least on y-axis)
     //TODO: Display in-game score
     //TODO: Display an end score on how boring the lecture was (lecture score)
     //TODO: Display lifepoints of player
@@ -69,7 +71,11 @@ public class GameBoard implements Observer {
     // The time in ms that has to pass, before the next shot can be done
     private static final long CANNON_COOLDOWN_TIMEOUT = 300;
 
-    public GameBoard(Dimension2D size) {
+    public GameBoard(Dimension2D size) throws IllegalArgumentException {
+        if (size.getWidth() <= 0 || size.getHeight() <= 0) {
+            System.err.println("Wrong Dimension Input for the Gameboard");
+            throw new IllegalArgumentException();
+        }
         this.size = size;
         aliens = new ArrayList<>();
         laserBolts = new ArrayList<>();
@@ -207,6 +213,12 @@ public class GameBoard implements Observer {
             return collision;
         });
 
+
+        // if not, then move alien and check, if an alien collided with the canon
+        // BIG TODO: WE normally dont have to check if an alien collides with the
+        // cannon, we just have to check if an alien reached the certain y point, if yes
+        // we can decrement the life of the player.
+
         for (Alien alien : aliens) {
             alien.moveVertically();
         }
@@ -256,6 +268,7 @@ public class GameBoard implements Observer {
     }
 
     public void stopMusic() {
+
         this.audioPlayer.stopBackgroundMusic();
     }
 
@@ -264,7 +277,8 @@ public class GameBoard implements Observer {
     }
 
     public void setRunning(boolean running) {
-        this.running.set(running);;
+        this.running.set(running);
+        ;
     }
 
     public GameOutcome getGameOutcome() {

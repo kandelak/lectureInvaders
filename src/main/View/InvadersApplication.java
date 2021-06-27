@@ -29,6 +29,10 @@ public class InvadersApplication extends Application {
 
     private GameBoard gameBoard;
 
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
+
     /**
      * Starts the Bumpers Window by setting up a new tool bar, a new user interface
      * and adding them to the stage.
@@ -57,7 +61,11 @@ public class InvadersApplication extends Application {
 
     private void setupGameBoard() {
         Dimension2D size = getPreferredSize();
-        this.gameBoard = new GameBoard(size);
+        try {
+            this.gameBoard = new GameBoard(size);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
         this.gameBoard.setAudioPlayer(new AudioPlayer());
         this.gameBoard.getGameBoardUI().widthProperty().set(size.getWidth());
         this.gameBoard.getGameBoardUI().heightProperty().set(size.getHeight());

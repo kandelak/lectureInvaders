@@ -9,6 +9,10 @@ public class Cannon extends Entity {
     private static final double DEFAULT_WIDTH_CANNON = 110.0;
     private static final double DEFAULT_HEIGHT_CANNON = 80;
 
+    public static final Dimension2D getDefaultCannonSize() {
+        return new Dimension2D(DEFAULT_WIDTH_CANNON, DEFAULT_HEIGHT_CANNON);
+    }
+
     public Cannon(Dimension2D gameBoardSize) {
         super(gameBoardSize);
         // TODO: Set the values in the parent class for speed etc. like in Bumpers.

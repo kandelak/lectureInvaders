@@ -31,6 +31,7 @@ public class DataCollector {
      * Here : Very Naive score evaluation
      */
     void evaluate() {
+
         lectureScore = (Duration.between(start, end).toMinutes() /
                 LECTURE_DURATION.toMinutes()) * monstersShoot;
     }
