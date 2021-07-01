@@ -30,19 +30,19 @@ public class CannonAlienCollisionImpl extends CollisionImplementor {
 	/**
 	 * If alien passes the border, it counts as if an alien hit the cannon and it
 	 * evaluates to true!
-	 * 
+	 *
 	 * @param one {@link Cannon}
 	 * @param two {@link Alien}
 	 */
 	@Override
-	boolean detectCollision(Entity one, Entity two) {
+	public boolean detectCollision(Entity one, Entity two) {
 
 		final double limit = border - one.getSize().getHeight();
 
 		Point2D p2 = two.getPosition();
 		Dimension2D d2 = two.getSize();
 
-		return p2.getY() + d2.getHeight() >= limit ? true : false;
+		return p2.getY() + d2.getHeight() >= limit;
 	}
 
 }

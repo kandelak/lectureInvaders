@@ -8,7 +8,7 @@ public abstract class CollisionImplementor {
 
 	public abstract boolean evaluate(Entity one, Entity two);
 
-	boolean detectCollision(Entity one, Entity two) {
+	public boolean detectCollision(Entity one, Entity two) {
 		Point2D p1 = one.getPosition();
 		Dimension2D d1 = one.getSize();
 

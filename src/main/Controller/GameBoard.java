@@ -1,14 +1,5 @@
 package main.Controller;
 
-import java.time.Instant;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
@@ -16,13 +7,14 @@ import main.Audio.AudioPlayer;
 import main.Audio.AudioPlayerInterface;
 import main.Controller.Collisions.CollisionCannonAlien;
 import main.Controller.Collisions.CollisionLaserAlien;
-import main.GameEntity.Alien;
-import main.GameEntity.Cannon;
-import main.GameEntity.Entity;
-import main.GameEntity.LaserBolt;
-import main.GameEntity.Player;
+import main.GameEntity.*;
 import main.View.GameBoardUI;
 import main.View.GameToolBar;
+
+import java.time.Instant;
+import java.time.LocalTime;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameBoard implements Observer {
 
@@ -78,6 +70,9 @@ public class GameBoard implements Observer {
 	private static final long CANNON_COOLDOWN_TIMEOUT = 300;
 
 	public GameBoard(Dimension2D size) {
+		if (size.getHeight() <= 0 || size.getWidth() <= 0) {
+			throw new IllegalArgumentException();
+		}
 		this.size = size;
 		aliens = new ArrayList<>();
 		laserBolts = new ArrayList<>();
@@ -291,7 +286,6 @@ public class GameBoard implements Observer {
 
 	public void setRunning(boolean running) {
 		this.running.set(running);
-		;
 	}
 
 	public GameOutcome getGameOutcome() {

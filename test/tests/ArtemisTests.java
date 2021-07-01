@@ -1,6 +1,6 @@
 package tests;
 
-import main.Controller.Collisions.AlienLaserCollisionImpl;
+import main.Controller.Collisions.LaserAlienCollisionImpl;
 import main.Controller.Dimension2D;
 import main.Controller.GameBoard;
 import main.Controller.Point2D;
@@ -131,7 +131,7 @@ public class ArtemisTests {
         //Place below the Alien so no collision occurs
         laserBolt.setPosition(new Point2D(alien.getPosition().getX(),
                 alien.getPosition().getY() - laserBolt.getSize().getHeight() - 0.01));
-        AlienLaserCollisionImpl alienLaserCollision = new AlienLaserCollisionImpl();
+        LaserAlienCollisionImpl alienLaserCollision = new LaserAlienCollisionImpl();
         Assertions.assertFalse(alienLaserCollision.detectCollision(laserBolt, alien));
     }
 
@@ -145,7 +145,7 @@ public class ArtemisTests {
         //the pick of the laserBolt is exactly on the bottom line of the Alien
         laserBolt.setPosition(new Point2D(alien.getPosition().getX(),
                 alien.getPosition().getY() - laserBolt.getSize().getHeight()));
-        AlienLaserCollisionImpl alienLaserCollision = new AlienLaserCollisionImpl();
+        LaserAlienCollisionImpl alienLaserCollision = new LaserAlienCollisionImpl();
         Assertions.assertTrue(alienLaserCollision.detectCollision(laserBolt, alien));
     }
 
