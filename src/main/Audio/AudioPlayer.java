@@ -14,8 +14,8 @@ public class AudioPlayer implements AudioPlayerInterface {
 
 	private static final String BACKGROUND_MUSIC_FILE = "GameMusic.wav";
 	private static final String ALIEN_KILLED_SOUND_FILE = "alienKilled.wav";
-	private static final String PLAYER_LOST_LIFE_SOUND_FILE = "playerLostLife.wav";
-	private static final String PLAYER_KILLED_SOUND_FILE = "playerKilled.wav";
+	private static final String PLAYER_LOST_LIFE_SOUND_FILE = "lifeLost.wav";
+	private static final String PLAYER_KILLED_SOUND_FILE = "gameOver.wav";
 
 	private static final double CRASH_SOUND_VOLUME = 0.5;
 
