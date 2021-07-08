@@ -60,15 +60,12 @@ public class InvadersApplication extends Application {
     }
 
     private void setupGameBoard() {
-        Dimension2D size = getPreferredSize();
         try {
-            this.gameBoard = new GameBoard(size);
+            this.gameBoard = new GameBoard(GameBoardUI.getPreferredSize());
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
         this.gameBoard.setAudioPlayer(new AudioPlayer());
-        this.gameBoard.getGameBoardUI().widthProperty().set(size.getWidth());
-        this.gameBoard.getGameBoardUI().heightProperty().set(size.getHeight());
     }
 
     /**

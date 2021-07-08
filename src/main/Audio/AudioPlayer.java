@@ -84,12 +84,4 @@ public class AudioPlayer implements AudioPlayerInterface {
 		}
 		return musicSourceUrl.toExternalForm();
 	}
-
-	public static String getBackgroundMusicFile() {
-		return BACKGROUND_MUSIC_FILE;
-	}
-
-	public static String getCrashSoundFile() {
-		return ALIEN_KILLED_SOUND_FILE;
-	}
 }

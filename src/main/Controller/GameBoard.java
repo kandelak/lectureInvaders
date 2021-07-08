@@ -80,8 +80,11 @@ public class GameBoard implements Observer {
 		// create entities
 		player = new Player(new Cannon(this.size));
 
-		// create UI and keyListener
+		// create UI, audioPlayer and keyListener
 		gameBoardUI = new GameBoardUI(this);
+		gameBoardUI.widthProperty().set(size.getWidth());
+		gameBoardUI.heightProperty().set(size.getHeight());
+		
 		audioPlayer = new AudioPlayer();
 		keyListener = new KeyListener();
 
