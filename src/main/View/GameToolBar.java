@@ -4,6 +4,7 @@ package main.View;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
+import javafx.scene.text.Text;
 
 
 /**
@@ -18,14 +19,16 @@ public class GameToolBar extends ToolBar {
 
     private final Button start;
     private final Button stop;
+    private final Text statusText;
 
     public GameToolBar() {
         this.start = new Button("Start");
         this.stop = new Button("Stop");
+        this.statusText = new Text("-");
 
         // the game is stopped initially
         updateToolBarStatus(false);
-        getItems().addAll(this.start, new Separator(), this.stop);
+        getItems().addAll(this.start, new Separator(), this.stop, new Separator(), statusText);
     }
 
     /**
@@ -45,5 +48,9 @@ public class GameToolBar extends ToolBar {
     public void updateToolBarStatus(boolean running) {
         this.start.setDisable(running);
         this.stop.setDisable(!running);
+    }
+
+    public void updateToolBarStatusText(String newText){
+        this.statusText.setText(newText);
     }
 }

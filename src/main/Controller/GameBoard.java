@@ -166,6 +166,7 @@ public class GameBoard implements Observer {
 		}
 
 		updateEntities();
+		gameBoardUI.getToolBar().updateToolBarStatusText("Lives: " + player.getPlayerLifePoints());
 		gameBoardUI.paint();
 	}
 
