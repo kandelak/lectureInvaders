@@ -20,7 +20,6 @@ public class GameBoard implements Observer {
 
 	// TODO: Display in-game score
 	// TODO: Display an end score on how boring the lecture was (lecture score)
-	// TODO: Display lifepoints of player
 	// TODO: Change the messages when starting/stopping/loosing and winning the game
 	// (more creative)
 	// TODO: put the speed of the other entities in their respective classes
@@ -38,8 +37,6 @@ public class GameBoard implements Observer {
 	private static final int UPDATE_PERIOD = 1000 / 25; // The update period of the game in ms, this gives us 25 fps
 	private static final int NUMBER_OF_ALIENS = 8;
 
-	private final static double DEFAULT_CANNON_STEP = 14.0;
-	private final static double DEFAULT_BOLT_STEP = -17.0;
 
 	private AudioPlayerInterface audioPlayer;
 	private GameOutcome gameOutcome = GameOutcome.OPEN;
@@ -246,14 +243,14 @@ public class GameBoard implements Observer {
 			aliens.add(new Alien(size));
 
 		for (LaserBolt bolt : laserBolts)
-			bolt.moveVertically(DEFAULT_BOLT_STEP);
+			bolt.moveVertically();
 		laserBolts.removeIf(laserBolt -> laserBolt.getPosition().getY() < -10);
 
 		if (keyListener.getKeysPressed().contains(KeyCode.RIGHT) || keyListener.getKeysPressed().contains(KeyCode.D))
-			player.getCannon().moveHorizontally(DEFAULT_CANNON_STEP);
+			player.getCannon().moveHorizontally(false);
 
 		if (keyListener.getKeysPressed().contains(KeyCode.LEFT) || keyListener.getKeysPressed().contains(KeyCode.A))
-			player.getCannon().moveHorizontally(-DEFAULT_CANNON_STEP);
+			player.getCannon().moveHorizontally(true);
 
 		if (keyListener.getKeysPressed().contains(KeyCode.SPACE)
 				&& Instant.now().toEpochMilli() - shootingCooldownTimestamp > CANNON_COOLDOWN_TIMEOUT) {
